@@ -1,0 +1,168 @@
+public class SinglyLinkedList {
+    static class Node {
+        int data;
+        Node next;
+        
+        Node() {
+            data = 0;
+            next = null;
+        }
+        
+        Node(int value) {
+            data = value;
+            next = null;
+        }
+        
+        Node(int value, Node nextNode) {
+            data = value;
+            next = nextNode;
+        }
+    }
+    
+    private Node head;
+    private int size;
+    
+    public SinglyLinkedList() {
+        head = null;
+        size = 0;
+    }
+    
+    public SinglyLinkedList(int value) {
+        head = new Node(value);
+        size = 1;
+    }
+    
+    public boolean isEmpty() {
+        return head == null;
+    }
+    
+    public int size() {
+        return size;
+    }
+    
+    public String toString() {
+        
+        Node temp = head;
+        String s = "";
+
+        while (temp != null) {
+            s += temp.data + " --> ";
+            temp = temp.next;
+        }
+
+        s += "null";
+
+        return s;
+    }
+    
+    public int get(int index) {
+        
+        if (index < 0 || index >= size()) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        Node temp = head;
+        
+        for (int i = 0; i < index; i++) {
+            temp = temp.next;
+        }
+
+        return temp.data;
+    }
+    
+    public boolean contains(int value) {
+        
+        Node temp = head;
+        boolean found = false;
+
+        while (temp != null && found == false) {
+            if (temp.data == value) {
+                found = true;
+            }
+            temp = temp.next;
+        }
+
+        return found;
+    }
+    
+    public void add(int value) {
+        
+        Node temp = new Node(value);
+        
+        if ( head == null ) {
+            head = temp;
+        } else {
+            Node pos = head;
+            
+            while ( pos.next != null ) {
+                
+                pos = pos.next;
+            }
+            
+            pos.next = temp;
+        }
+        size++;
+    }
+    
+    public void add(int index, int value) {
+
+        if (index < 0 || index > size()) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        Node newNode = new Node(value);
+        // add at head
+        if (index == 0) {
+            newNode.next = head;
+            head = newNode;
+        // add elsewhere
+        } else {
+            Node temp = head;
+            for (int i = 0; i < index-1; i++) {
+                temp = temp.next;
+            }
+
+            newNode.next = temp.next;
+            temp.next = newNode;
+        }
+        size++;
+    }
+    
+    public int remove() {
+
+        if (head == null) {
+            throw new NoSuchElementException();
+        }
+
+        int temp = head.data;
+        head = head.next;
+
+        size--;
+
+        return temp;
+    }
+    
+    public int remove(int index) {
+
+        if (index < 0 || index >= size()) {
+            throw new IndexOutOfBoundsException();
+        }
+        
+        int tempData = 0;
+        
+        if ( index == 0 ) {
+            tempData = head.data;
+            head = head.next;
+        } else {
+            Node temp = head;
+            for (int i = 0; i < index-1; i++) {
+                temp = temp.next;
+            }
+    
+            tempData = temp.next.data;
+            temp.next = temp.next.next;
+        }
+        size--;
+        return tempData;
+    }
+}
