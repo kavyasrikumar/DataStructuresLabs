@@ -1,0 +1,119 @@
+class Node {
+    public int data;
+    public Node next;
+
+    public Node(int data) {
+        this.data = data;
+    }
+    
+    public Node(int data, Node next) {
+        this.data = data;
+        this.next = next;
+    }
+    
+    // Make a copy of the given node.
+    public Node(Node node) {
+        this.data = node.data;
+        this.next = node.next;
+    }
+}
+
+public class ProblemSet03 {
+    public static Node getMin(Node head) {
+        
+        Node temp = head;
+        Node result = head;
+        
+        if ( head == null ){
+            return null;
+        }
+        
+        while ( temp.next != null ){
+            
+            if ( temp.next.data < result.data) {
+                result = temp.next;
+            }
+            
+            temp = temp.next;
+        }
+        
+        if ( temp.data < result.data ) {
+            result = temp;
+        }
+        
+        return result;
+    }
+
+    public static Node mergeTwoLists(Node head1, Node head2) {
+        
+        // creates a placeholder for the head of the result List
+        Node firstNode = new Node(1); 
+        Node pointer = firstNode;
+
+        while (head1 != null && head2 != null) {
+ 
+            if (head1.data <= head2.data) {
+                pointer.next = new Node (head1.data, null);
+                head1 = head1.next;
+            } else { 
+                pointer.next = new Node (head2.data, null);
+                head2 = head2.next;
+            }
+            pointer = pointer.next;
+        }
+
+        while (head1 != null) {
+            pointer.next = new Node (head1.data, null);
+            head1 = head1.next;
+            pointer = pointer.next;
+        }
+
+        while (head2 != null) {
+            pointer.next = new Node (head2.data, null);
+            head2 = head2.next;
+            pointer = pointer.next;
+        }
+
+        return firstNode.next;
+    }
+
+    public static Node reverseList(Node head) {
+        
+        Node newHead = head;
+        
+        if (head != null) {
+        
+            Node current = head.next;
+        
+            // initialize the head of the result from the last node in head
+            newHead = new Node (head.data, null);
+    
+            while (current != null) {
+                newHead = new Node (current.data, newHead);
+                current = current.next;
+            }
+        }
+        return newHead;
+    }
+
+    public static boolean isPalindrome(Node head) {
+        
+        if (head == null) {
+            return false;
+        }
+        
+        Node temp = head;
+        Node reverse = reverseList(head);
+        boolean palindrome = true;
+
+        while ((reverse != null) && (palindrome == true)) {
+            if (reverse.data != temp.data) {
+                palindrome = false;
+            } else {
+                reverse = reverse.next;
+                temp = temp.next;
+            }
+        }
+        return palindrome;
+    } 
+}
