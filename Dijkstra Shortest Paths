@@ -1,0 +1,87 @@
+public class DijkstraShortestPaths {
+    private double[] distanceTo;
+    private int[] previous;
+    
+    private int vertices;
+    private int source;
+    private IndexMinPQ<Double> priority;
+
+    public DijkstraShortestPaths(EdgeWeightedDigraph graph, int source) {
+        
+        vertices = graph.getNumberOfVertices();
+        this.source = source;
+        
+        previous = new int[vertices];
+        priority = new IndexMinPQ<Double>(vertices);
+        
+        distanceTo = new double[vertices];
+        
+        for (int i = 0; i < vertices; i++)
+        {
+            distanceTo[i] = Double.POSITIVE_INFINITY;
+        }
+        distanceTo[source] = 0;
+        
+        priority.insert(source, distanceTo[source]);
+        
+        while(priority.isEmpty() == false)
+        {
+            int temp = priority.delMin();
+            
+            for (DirectedEdge d : graph.adjacent(temp))
+            {
+                double weight = d.weight();
+                
+                if (distanceTo[temp] < distanceTo[d.to()] - weight)
+                {
+                    distanceTo[d.to()] = distanceTo[temp] + weight;
+                    previous[d.to()] = temp;
+                    if (priority.contains(d.to()))
+                    {
+                        priority.decreaseKey(d.to(), distanceTo[d.to()]);
+                    }
+                    else 
+                    {
+                        priority.insert(d.to(), distanceTo[d.to()]);
+                    }
+                    
+                }
+            }
+        }
+        
+    }
+    
+    public double getDistanceTo(int v) {
+        if (!(0 <= v && v < vertices)) 
+        {
+            throw new IllegalArgumentException();
+        }
+        
+        return distanceTo[v];
+    }
+    
+    public Iterable<Integer> getPathTo(int v) {
+        if (!(0 <= v && v < vertices)) 
+        {
+            throw new IllegalArgumentException();
+        }
+        
+        if (distanceTo[v] >= Double.POSITIVE_INFINITY) 
+        {
+            return null;
+        }
+        
+        Stack<Integer> path = new Stack<Integer>();
+        
+        int i = v;
+        while (i != source)
+        {
+            path.push(i);
+            i = previous[i];
+        }
+        path.push(0);
+        
+        Collections.reverse(path);
+        return path;
+    }
+}
