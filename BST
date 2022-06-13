@@ -1,0 +1,544 @@
+// Find 
+public class BinarySearchTree<TKey extends Comparable<TKey>, TValue> {
+    class Node {
+        TKey key;
+        TValue value;
+        Node left;
+        Node right;
+    }
+
+    Node root;
+
+    public TValue find(TKey key) {
+        if (key == null)
+        {
+         return null;   
+        }
+        
+        return find(root, key);
+    }
+
+    private TValue find(Node current, TKey key) {
+        
+        if (current == null){
+            return null;
+        }
+        
+        if (key.compareTo(current.key) < 0){
+            return find(current.left, key);
+        }
+        
+        if (key.compareTo(current.key) > 0){
+            return find(current.right, key);
+        }
+        
+        return current.value;
+    }
+
+    // This is used by our test code. Do not change.
+    Node newNode(TKey key, TValue value, Node left, Node right) {
+        Node node = new Node();
+        node.key = key;
+        node.value = value;
+        node.left = left;
+        node.right = right;
+        return node;
+    }
+}
+
+// insert
+public class BinarySearchTree<TKey extends Comparable<TKey>, TValue> {
+    class Node {
+        TKey key;
+        TValue value;
+        Node left;
+        Node right;
+    }
+
+    Node root;
+
+    public TValue insert(TKey key, TValue value) {
+        if (key == null)
+        {
+            return null;
+        }
+
+        Node temp = new Node();
+        temp.key = key;
+        temp.value = value;
+        
+        if (root == null){
+            root = temp;
+            return null;
+        }
+        
+        return insert(root, temp);
+    }
+    
+    private TValue insert(Node current, Node newNode) {
+        
+        if(current.key.compareTo(newNode.key) > 0)
+        {
+            if (current.left == null)
+            {
+                current.left = newNode;
+                return null;
+            }
+
+            return insert(current.left, newNode);
+        }
+        
+        if(current.key.compareTo(newNode.key) < 0)
+        {
+            if (current.right == null)
+            {
+                current.right = newNode;
+                return null;
+            }
+            
+            return insert(current.right, newNode);
+        }
+        
+        if (current.key.compareTo(newNode.key) == 0)
+        {
+            TValue temp = current.value;
+            current.value = newNode.value;
+            return temp;
+        }
+        
+        return null;
+    }
+}
+
+// height
+public class BinarySearchTree<TKey extends Comparable<TKey>, TValue> {
+    class Node {
+        TKey key;
+        TValue value;
+        Node left;
+        Node right;
+    }
+
+    Node root;
+    int height = 1;
+
+    public int height() {
+        
+        if (root == null)
+        {
+            return 0;
+        } 
+        else if (root.left == null & root.right == null)
+        {
+            return 0;
+        }
+        else
+        {
+           return height(root);
+        }
+    }
+
+    private int height(Node current) {
+        
+        if (current.left != null) {
+            height++;
+            return height(current.left);
+        }
+        else if (current.right != null) {
+            height++;
+            return height(current.right);
+        }
+        
+        return height;
+    }
+
+    // This is used by our test code. Do not change.
+    Node newNode(TKey key, TValue value, Node left, Node right) {
+        Node node = new Node();
+        node.key = key;
+        node.value = value;
+        node.left = left;
+        node.right = right;
+        return node;
+    }
+}
+
+// print keys
+public class BinarySearchTree<TKey extends Comparable<TKey>, TValue> {
+    class Node {
+        TKey key;
+        TValue value;
+        Node left;
+        Node right;
+    }
+
+    Node root;
+
+    public void printKeys() {
+        if (root == null)
+        {
+            return;
+        }
+        if (root.left == null & root.right == null){
+            System.out.println(root.key);
+        }
+        else {
+            printKeys(root.left);
+            System.out.println(root.key);
+            printKeys(root.right);
+        }
+    }
+
+    private void printKeys(Node node) {
+        
+        if (node != null) {
+            printKeys(node.left);
+            System.out.println(node.key);
+            printKeys(node.right);
+        }
+    }
+
+    // This is used by our test code. Do not change.
+    Node newNode(TKey key, TValue value, Node left, Node right) {
+        Node node = new Node();
+        node.key = key;
+        node.value = value;
+        node.left = left;
+        node.right = right;
+        return node;
+    }
+}
+
+// size and rank
+public class BinarySearchTree<TKey extends Comparable<TKey>, TValue> {
+    class Node {
+        TKey key;
+        TValue value;
+        Node left;
+        Node right;
+    }
+
+    Node root;
+
+    public int size() {
+        if (root == null || root.key == null){
+            return 0;
+        }
+        return size(root);
+    }
+
+    private int size(Node node) {
+        int size = 0;
+        if (node.key.equals(root.key))
+        {
+            size++;
+        }
+        if (node.left != null)
+        {
+            size++;
+            size += size(node.left);
+        }
+        if (node.right != null)
+        {
+            size++;
+            size += size(node.right);
+        }
+        
+        return size;
+    }
+
+    public int rank(TKey key) {
+        if (root == null)
+        {
+            return 0;
+        } 
+        else if (root.left == null & root.right == null)
+        {
+            return 0;
+        }
+        else
+        {
+           return rank(root, key);
+        }
+    }
+    int rank = 0;
+    
+    private int rank(Node node, TKey key) {
+        
+        if (node == null)
+        {
+            return 0;
+        }
+        
+        
+        if (node.key.compareTo(key) < 0)
+        {
+            return 1 + rank(node.left, key) + rank(node.right, key);
+        }
+        else
+        {
+            return rank(node.left, key) + rank(node.right, key);
+        }
+    }
+
+    // This is used by our test code. Do not change.
+    Node newNode(TKey key, TValue value, Node left, Node right) {
+        Node node = new Node();
+        node.key = key;
+        node.value = value;
+        node.left = left;
+        node.right = right;
+        return node;
+    }
+}
+
+// min and max
+public class BinarySearchTree<TKey extends Comparable<TKey>, TValue> {
+    class Node {
+        TKey key;
+        TValue value;
+        Node left;
+        Node right;
+    }
+
+    Node root;
+    TKey min;
+    TKey max;
+
+    public TKey min() {
+        if (root == null)
+        {
+            return null;
+        }
+        else if (root.left == null & root.right == null)
+        {
+            return root.key;
+        }
+        else 
+        {
+            min = root.key;
+        }
+        return min(root);
+    }
+    
+    
+    private TKey min(Node node) {
+        if (node != null && node.key.compareTo(min) < 0)
+        {
+            min = node.key;
+        }
+        if (node.left == null){
+            return min;
+        }
+        if(node.left != null){
+            return min(node.left);
+        }
+        return null;
+    }
+
+    public TKey max() {
+        if (root == null)
+        {
+            return null;
+        }
+        else if (root.left == null & root.right == null)
+        {
+            return root.key;
+        }
+        else 
+        {
+            max = root.key;
+        }
+        return max(root);
+    }
+
+    private TKey max(Node node) {
+        if (node != null && node.key.compareTo(max) > 0)
+        {
+            max = node.key;
+        }
+        if (node.right == null){
+            return max;
+        }
+        if(node.right != null){
+            return max(node.right);
+        }
+        return null;
+    }
+
+    // This is used by our test code. Do not change.
+    Node newNode(TKey key, TValue value, Node left, Node right) {
+        Node node = new Node();
+        node.key = key;
+        node.value = value;
+        node.left = left;
+        node.right = right;
+        return node;
+    }
+}
+
+// floor
+public class BinarySearchTree<TKey extends Comparable<TKey>, TValue> {
+    class Node {
+        TKey key;
+        TValue value;
+        Node left;
+        Node right;
+    }
+
+    Node root;
+
+    public TKey floor(TKey key) {
+        if (root == null)
+        {
+            return null;
+        }
+        if (root.key.compareTo(key) == 0)
+        {
+            return root.key;
+        }
+        
+        return floor(root, key);
+    }
+
+    private TKey floor(Node node, TKey key) {
+        
+        if (node.key.compareTo(key) < 0 || node.key.compareTo(key) == 0)
+        {
+            if (node.right != null)
+            {
+                return floor(node.right, key);
+            }
+            
+            return node.key; 
+        }
+        else if (node.left != null)
+        {
+            return floor(node.left, key);
+        }
+        
+        return null;
+    }
+
+    // This is used by our test code. Do not change.
+    Node newNode(TKey key, TValue value, Node left, Node right) {
+        Node node = new Node();
+        node.key = key;
+        node.value = value;
+        node.left = left;
+        node.right = right;
+        return node;
+    }
+}
+
+// deleteMin and delete
+public class BinarySearchTree<TKey extends Comparable<TKey>, TValue> {
+    class Node {
+        TKey key;
+        TValue value;
+        Node left;
+        Node right;
+    }
+
+    Node root;
+
+    /**
+     * Deletes the minimum node in the binary search tree.
+     */
+    public void deleteMin() {
+        if (root == null)
+        {
+            return;
+        }
+        
+        root = deleteMin(min(root));
+    }
+
+    /**
+     * Deletes the minimum node in the subtree with root {@param node}.
+     * 
+     * Returns the root of the new subtree at {@param node}'s initial position.
+     */
+    private Node deleteMin(Node node) {
+        
+        return delete(root, min(root).key);
+    }
+
+    /**
+     * Deletes the node with key equal to {@param key} in the binary search tree.
+     */
+    public void delete(TKey key) {
+        if (key == null)
+        {
+            return;
+        }
+        
+        root = delete(root, key);
+    }
+
+    /**
+     * Deletes the node with key equal to {@param key} in the subtree with root {@param node}.
+     * 
+     * Returns the root of the new subtree at {@param node}'s initial position.
+     */
+    private Node delete(Node node, TKey key) {
+        
+        if (node == null)
+        {
+            return null;
+        }
+
+        if (key.compareTo(node.key) < 0){
+            node.left = delete(node.left, key);
+        }
+        else if (key.compareTo(node.key) > 0){
+            node.right = delete(node.right, key);
+        }
+        else
+        {
+            if (node.left == null)
+            {
+                return node.right;
+            }
+            if (node.right == null)
+            {
+                return node.left;
+            }
+            
+            node.key = min(node.right).key;
+            node.right = delete(node.right, node.key);
+        }
+        
+        return node;
+    }
+
+    /**
+     * Finds and returns the minimum node starting at the subtree with root {@param node}.
+     * 
+     * Hint: Use this to implement Case 3 (2 children) in Hibbard deletion.
+     */
+    private Node min(Node node) {
+        
+        if (node == null)
+        {
+            return null;
+        }
+        if (node.left == null)
+        {
+            return node;
+        }
+        return min(node.left);
+        
+    }
+
+    // This is used by our test code. Do not change.
+    Node newNode(TKey key, TValue value, Node left, Node right) {
+        Node node = new Node();
+        node.key = key;
+        node.value = value;
+        node.left = left;
+        node.right = right;
+        return node;
+    }
+}
+
