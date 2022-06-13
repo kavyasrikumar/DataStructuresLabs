@@ -1,0 +1,118 @@
+public class BinaryHeapMaxPQ<Key extends Comparable<Key>> {
+    
+    private Key[] heap;
+    private int size;
+
+    public BinaryHeapMaxPQ() {
+        heap = (Key[]) new Comparable[2];
+        size = 0;
+    }
+
+    public void insert(Key key) {
+        
+        if(key == null)
+        {
+            throw new IllegalArgumentException();
+        }
+        
+        if (heap.length - 1 == size )
+        {
+            resize(heap.length * 2);
+        }
+        
+        size++;
+        
+        heap[size] = key;
+        swim(size);
+        
+    }
+
+    public Key delMax() {
+        
+        if (size == 0)
+        {
+            throw new IllegalStateException();
+        }
+        
+        Key max = max();
+        
+        heap[1] = null;
+        
+        
+        exch(1, size--);
+        sink(1);
+        
+        heap[size + 1] = null;
+        
+        if(size > 0 && ((heap.length - 1) / 4 == size))
+        {
+            resize(heap.length / 2);
+        }
+        
+        return max;
+    }
+
+    public Key max() {
+        if (heap == null || heap[1] == null)
+        {
+            throw new IllegalStateException();
+        }
+        
+        return (Key)heap[1];
+    }
+
+    public boolean isEmpty() {
+        if (size == 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public int size() {
+       return size;
+    }
+
+    private void resize(int capacity) {
+            
+        Key[] temp = (Key[]) new Comparable[capacity];
+            
+        for (int i = 1; i <= size; i++)
+        {
+            temp[i] = heap[i];
+        }
+        heap = temp;
+    }
+
+    private void sink(int k) {
+        while (k * 2 <= size)
+        {
+            k *= 2;
+            if (k < size && heap[k+1].compareTo(heap[k]) > 0)
+            {
+                k++;
+            }
+            if(!(heap[k].compareTo(heap[k/2]) > 0))
+            {
+                return;
+            }
+            
+            exch(k/2, k);
+        }
+        
+    }
+
+    private void swim(int k) {
+        while(k > 1 && heap[k/2].compareTo(heap[k]) < 0)
+        {
+            exch(k, k/2);
+            k /= 2;
+        }
+    }
+
+    private void exch(int i, int j) {
+        Key temp = heap[i];
+        heap[i] = heap[j];
+        heap[j] = temp;
+    }
+}
