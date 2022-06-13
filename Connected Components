@@ -1,0 +1,56 @@
+public class ConnectedComponents {
+    private boolean[] marked; // marked[v] = whether v has been visited
+    private int[] id;         // id[v] = id of connected component containing v
+    private int count;        // numbef of connected components
+    private int V;
+    // YOU MAY ADD MORE MEMBER VARIABLES IF YOU NEED TO.
+
+    public ConnectedComponents(Graph graph) {
+        
+        V = graph.getNumberOfVertices();
+        
+        marked = new boolean[V];
+        id = new int[V];
+        
+        
+        for(int i = 0; i < V; i++)
+        {
+            if (marked[i] == false)
+            {
+                dfs(graph, i);
+                count++;
+            }
+        }
+    }
+    
+    private void dfs(Graph graph, int v) {
+        
+        marked[v] = true;
+        id[v] = count;
+        
+        for(int i : graph.adjacent(v))
+        {
+            if (marked[i] == false)
+            {
+                dfs(graph, i);
+            }
+        }
+    }
+    
+    /** Returns number of connected components. */
+    public int count() {
+        return count;
+    }
+    
+    /** Returns whether the two given vertices {@code v} and {@code w} are in the same connected component. */
+    public boolean connected(int v, int w) {
+        
+        // The connected method throws an IllegalArgumentException unless 0 <= v < V and 0 <= w < V, where V is the number of vertices in the graph.
+        if (  !( 0 <= v && v < V && 0 <= w && w < V))
+        {
+            throw new IllegalArgumentException();   
+        }
+
+        return id[v] == id[w];
+    }
+}
