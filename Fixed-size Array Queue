@@ -1,0 +1,84 @@
+public class FixedSizeArrayQueue<T> {
+    // ADD YOUR CODE HERE.
+    
+    private T[] array;
+    private int front = 0;
+    private int rear = -1;
+    private int size;
+    private int maximumSize;
+    
+    public FixedSizeArrayQueue(int maxSize) {
+        // ADD YOUR CODE HERE.
+        array = (T[])new Object[maxSize];
+        maximumSize = maxSize;
+    }
+    
+    public void enqueue(T newItem) {
+        // ADD YOUR CODE HERE.
+        if (newItem == null)
+        {
+            throw new IllegalArgumentException();
+        }
+        else if(size >= maximumSize) 
+        { 
+            throw new IllegalStateException();
+        } else {
+            if ( rear >= maximumSize - 1){
+                rear = 0;
+                array[rear] = (T) newItem;
+            } else {
+
+                array[++rear] = (T) newItem;
+            }
+            size++;
+        }
+        
+    }
+    
+    public T dequeue() {
+        // ADD YOUR CODE HERE.
+        T temp;
+        if (size <= 0 )
+        {
+            throw new IllegalStateException(); 
+        } else {
+            if ( front >= maximumSize - 1){
+                temp = (T)array[front];
+                array[front] = null;
+                size--;
+                front = 0;
+            } else {
+                temp = (T)array[front];
+                array[front] = null;
+                size--;
+                front++;   
+            }
+            
+            return temp;
+        }
+    }
+    
+    public T peek() {
+        // ADD YOUR CODE HERE.
+        if (size < 0 || array[0] == null)
+        {
+            throw new IllegalStateException(); 
+        } else {
+            return (T)array[front];
+        }
+    }
+    
+    public boolean isEmpty() {
+        // ADD YOUR CODE HERE.
+        if (size <= 0)
+        {
+            return true;
+        }
+        return false;
+    }
+    
+    public int size() {
+        // ADD YOUR CODE HERE.
+        return size;
+    }
+}
