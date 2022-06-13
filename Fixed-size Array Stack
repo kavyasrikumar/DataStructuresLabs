@@ -1,0 +1,75 @@
+public class FixedSizeArrayStack<T> {
+    
+    // ADD YOUR CODE HERE.
+    private T[] array;
+    private int top = -1;
+    private int size;
+    private int actualSize;
+    
+    public FixedSizeArrayStack(int maxSize) {
+        // ADD YOUR CODE HERE.
+        array = (T[])new Object[maxSize];
+        size = maxSize;
+    }
+    
+    public void push(T newItem) {
+        // ADD YOUR CODE HERE.
+        
+        if (newItem == null)
+        {
+            throw new IllegalArgumentException();
+        }
+        
+        if ( top < size - 1 && actualSize < size) 
+        {
+            array[++top] = (T) newItem;
+            actualSize++;
+        } else 
+        {
+            throw new IllegalStateException();
+        }
+        
+    }
+    
+    public T pop() {
+        // ADD YOUR CODE HERE.
+        
+        if (actualSize <= 0)
+        {
+            throw new IllegalStateException(); 
+        } else
+        {
+            T temp =  (T)array[top];
+            array[top] = null;
+            top--;
+            actualSize--;
+            
+            return (T)temp;
+        }
+        
+    }
+    
+    public T peek() {
+        // ADD YOUR CODE HERE.
+        if (size < 0 || array[0] == null)
+        {
+            throw new IllegalStateException(); 
+        } else {
+            return (T)array[top];
+        }
+    }
+    
+    public boolean isEmpty() {
+        // ADD YOUR CODE HERE.
+        if (actualSize <= 0)
+        {
+            return true;
+        }
+        return false;
+    }
+    
+    public int size() {
+        // ADD YOUR CODE HERE.
+        return actualSize;
+    }
+}
