@@ -1,0 +1,68 @@
+public class DFSPathFinder {
+    private boolean[] marked;  // marked[v] = whether there is a path from the source to vertex 'v'
+    private int[] edgeTo;      // edgeTo[v] = the last edge on the path from the source to vertex 'v'
+    private final int source;  // source vertex
+    
+    public DFSPathFinder(Digraph G, int s) {
+        
+        this.source = s;
+        
+        edgeTo = new int[G.V()];
+        marked = new boolean[G.V()];
+        
+        if (s < 0 || s >= marked.length)
+        {
+            throw new IllegalArgumentException();
+        }
+        
+        search(G, s);
+    }
+    
+    private void search(Digraph G, int s)
+    {
+        marked[s] = true;
+        for (int i : G.adj(s))
+        {
+            if (!marked[i])
+            {
+                edgeTo[i] = s;
+                search(G, i);
+            }
+        }
+    }
+    
+    /** Returns whether there exists a directed path from the source vertex and vertex {@code v}. */
+    public boolean hasPathTo(int v) {
+        if (v < 0 || v >= marked.length)
+        {
+            throw new IllegalArgumentException();
+        }
+        
+        return marked[v];
+    }
+    
+    /** Returns a path between the source vertex {@code s} and vertex {@code v}, or {@code null} if no such path. */
+    public Iterable<Integer> pathTo(int v) {
+        
+        if (hasPathTo(v) == false)
+        {
+            return null;
+        }
+        
+        Stack<Integer> path = new Stack<Integer>();
+        
+        int i = v;
+        
+        while (i != source )
+        {
+            path.push(i);
+            
+            i = edgeTo[i];
+        }
+        
+        path.push(source);
+        Collections.reverse(path);
+        
+        return path;
+    }
+}
