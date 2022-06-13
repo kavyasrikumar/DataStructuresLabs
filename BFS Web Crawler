@@ -1,0 +1,51 @@
+import java.util.Iterator;
+
+public class BFSWebCrawler {
+    
+    private HashSet<String> visited = new HashSet<String>();
+    private int distance = 0;
+    
+    /** Crawls the known web and outputs a message for each URL along with its distance from the root. */
+    public void crawl(String root) {
+        
+        Queue<String> urls = new LinkedList<String>();
+        Queue<String> newUrls = new LinkedList<String>();
+        
+        urls.add(root);
+        
+        while (!urls.isEmpty())
+        {
+            root = urls.remove();
+            
+            System.out.println(root + ": " + distance);
+            
+            visited.add(root);
+            
+            Iterator<String> refUrls = getReferencedUrls(root).iterator();
+            
+            while (refUrls.hasNext())
+            {
+                String s = refUrls.next();
+
+                if (!visited.contains(s))
+                {
+                    visited.add(s);
+                    newUrls.add(s);
+                }
+            }
+            
+            if(urls.isEmpty())
+            {
+                urls = newUrls;
+                distance++;
+                newUrls = new LinkedList<String>();
+            }
+        }
+        
+    }
+    
+    /** Fetches the list of referenced (linked) URLs from the given URL. DO NOT CHANGE. */
+    private List<String> getReferencedUrls(String url) {
+        return WebData.getUrlMappings(url);
+    }
+}
