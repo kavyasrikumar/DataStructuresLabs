@@ -1,0 +1,43 @@
+public class Heapsort {
+
+    public static void sort(Comparable[] data) {
+        int size = data.length;
+        
+        for (int i = size/2; i >= 1; i--)
+        {
+            sink(data, size, i);
+        }
+        
+        while (size > 1)
+        {
+            exch(data, size, 1);
+            
+            size--;
+            
+            sink(data, size, 1);
+        }
+    }
+
+    static void sink(Comparable[] data, int size, int k) {
+        while (k * 2 <= size)
+        {
+            k *= 2;
+            if (k < size && data[k].compareTo(data[k-1]) > 0)
+            {
+                k++;
+            }
+            if(!(data[k-1].compareTo(data[k/2-1]) > 0))
+            {
+                return;
+            }
+            
+            exch(data, k/2, k);
+        }
+    }
+
+    static void exch(Comparable[] data, int i, int j) {
+        Comparable temp = data[i-1];
+        data[i-1] = data[j-1];
+        data[j-1] = temp;
+    }
+}
