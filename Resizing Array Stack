@@ -1,0 +1,99 @@
+public class ResizingArrayStack<T> {
+    // ADD YOUR CODE HERE.
+    private T[] array;
+    private int top;
+    private int arraySize;
+    
+    public ResizingArrayStack() {
+        // ADD YOUR CODE HERE.
+        array = (T[])new Object[1];
+        top = -1;
+        arraySize = 1;
+    }
+    
+    public void push(T newItem) {
+        // ADD YOUR CODE HERE.
+        if (newItem == null)
+        {
+            throw new IllegalArgumentException();
+        }
+        
+        if (top + 1 < arraySize ) 
+        {
+            array[++top] = (T) newItem;
+        } 
+        else 
+        {
+            arraySize *= 2;
+            T[] newArray = (T[]) new Object[arraySize];
+            
+            for ( int i = 0; i <= top; i++ )
+            {
+                newArray[i] = (T) array[i];
+                array[i] = null;
+            }
+            
+            newArray[++top] = (T) newItem;
+            
+            this.array = newArray;
+        }
+    }
+    
+    public T pop() {
+        // ADD YOUR CODE HERE.
+        
+        if (isEmpty())
+        {
+            throw new IllegalStateException(); 
+        } 
+        else 
+        {
+            // pop the element
+            T temp =  (T)array[top];
+            array[top--] = null;
+            
+            // check if you have to resize
+
+            if (size() > 0 && (arraySize / 4 >= size()))
+            {
+                T[] newArray = (T[]) new Object[arraySize / 2];
+                for ( int i = 0; i <= top; i++ )
+                {
+                    newArray[i] = (T) array[i];
+                    array[i] = null;
+                }
+                
+                arraySize /= 2;
+                this.array = newArray;
+            }
+            
+
+            return (T)temp;
+        }
+        
+    }
+    
+    public T peek() {
+        // ADD YOUR CODE HERE.
+        if (arraySize < 0 || array[0] == null)
+        {
+            throw new IllegalStateException(); 
+        } else {
+            return (T)array[top];
+        }
+    }
+    
+    public boolean isEmpty() {
+        // ADD YOUR CODE HERE.
+        if (top < 0)
+        {
+            return true;
+        }
+        return false;
+    }
+    
+    public int size() {
+        // ADD YOUR CODE HERE.
+        return top+1;
+    }
+}
