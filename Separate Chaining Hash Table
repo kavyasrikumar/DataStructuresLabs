@@ -1,0 +1,92 @@
+public class SeparateChainingHashTable<TKey, TValue> {
+    private class Node {
+        TKey key;
+        TValue value;
+        Node next;
+    }
+    
+    private int size = 0;
+    
+    private Node[] buckets;
+    
+    public SeparateChainingHashTable(int initialCapacity) {
+        
+        buckets = new SeparateChainingHashTable.Node[initialCapacity];
+    }
+    
+    public void put(TKey key, TValue value) {
+        
+        if((size() + 1) >= (buckets.length / 2)){
+            resize(buckets.length * 2);
+        }
+        
+        Node newNode = new Node();
+        newNode.key = key;
+        newNode.value = value;
+        
+        int keyHashCode = Math.abs(key.hashCode());
+        keyHashCode %= buckets.length;
+        
+        if( buckets[keyHashCode] == null ) {
+            
+            buckets[keyHashCode] = newNode;
+            
+        } else {
+            
+            Node temp = buckets[keyHashCode];
+            
+            while(temp.next != null){
+                temp = temp.next;
+            }
+            
+            temp.next = newNode;
+        }
+        
+        size++;
+    
+    }
+    
+    public TValue get(TKey key) {
+        
+        int keyHashCode = Math.abs(key.hashCode());
+        keyHashCode %= buckets.length;
+        Node temp = buckets[keyHashCode];
+        
+        while(temp != null){
+            if(temp.key.equals(key)){
+                return temp.value;
+            } else {
+                temp = temp.next;
+            }
+        }
+        return null;
+    }
+    
+    public int size() {
+        return size;
+    }
+    
+    public boolean isEmpty() {
+        if(size() <= 0){
+            return true;
+        }
+        return false;
+    }
+    
+    private void resize(int newCapacity) {
+        // ADD YOUR CODE HERE.
+        Node[] copy = buckets;
+        
+        Node[] newBuckets = new SeparateChainingHashTable.Node[newCapacity];
+        this.buckets = newBuckets;
+        
+        this.size = 0;
+        
+        for( int i = 0; i < copy.length; i++){
+            while(copy[i] != null){
+                put(copy[i].key, copy[i].value);
+                copy[i] = copy[i].next;
+            }
+        }
+    }
+}
