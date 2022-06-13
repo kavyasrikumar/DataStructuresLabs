@@ -1,0 +1,117 @@
+public class LinkedListDeque<T> {
+    private static class Node<T> {
+        T data;
+        Node<T> next;
+        Node<T> previous;
+        
+        Node() {
+            data = null;
+            next = null;
+            previous = null;
+        }
+        
+        Node(T value) {
+            data = value;
+            next = null;
+            previous = null;
+        }
+    }
+    
+    private Node<T> head;
+    private Node<T> tail;
+    private int size;
+    
+    public LinkedListDeque() {
+        head = null;
+        tail = null;
+    }
+    
+    public void pushRight(T newItem) {
+        
+        if (newItem == null)
+        {
+            throw new IllegalArgumentException();
+        }
+        
+        Node<T> temp = new Node(newItem);
+        
+        if ( head == null ) {
+            head = temp;
+        } else {
+            Node pos = head;
+            
+            while ( pos.next != null ) {
+                
+                pos = pos.next;
+            }
+            pos.next = temp;
+        }
+        size++;
+    }
+    
+    public void pushLeft(T newItem) {
+        
+        if (newItem == null)
+        {
+            throw new IllegalArgumentException();
+        }
+        
+        Node<T> temp = new Node(newItem);
+        
+        temp.next = head;
+        
+        head = temp;
+
+        size++;
+    }
+    
+    public T popRight() {
+        if (isEmpty()) {
+            throw new IllegalStateException();
+        }
+        
+        Node<T> temp = head;
+        T removeVal = null;
+        
+        if(size == 1){
+            removeVal = head.data;
+            head = null;
+        }
+        else {
+            for (int i = 0; i < size-2; i++){
+                temp = temp.next;
+            }
+            
+            removeVal = temp.next.data;
+            temp.next = null;
+        }
+        size--;
+        
+        return removeVal;
+    }
+    
+    public T popLeft() {
+        if (isEmpty()) {
+            throw new IllegalStateException();
+        }
+        
+        T removeVal = head.data;
+        head = head.next;
+
+        size--;
+
+        return removeVal;
+    }
+    
+    
+    public boolean isEmpty() {
+        if (size <= 0){
+            return true;
+        }
+        return false;
+    }
+    
+    public int size() {
+        return size;
+    }
+}
