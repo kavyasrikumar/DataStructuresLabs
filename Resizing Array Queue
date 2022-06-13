@@ -1,0 +1,88 @@
+public class ResizingArrayQueue<T> {
+    // ADD YOUR CODE HERE.
+    private T[] array;
+    private int size;
+    private int maximumSize;
+    
+    public ResizingArrayQueue() {
+        // ADD YOUR CODE HERE.
+        array = (T[])new Object[1];
+        maximumSize = 1;
+        size = 0;
+    }
+    
+    public void enqueue(T newItem) {
+        // ADD YOUR CODE HERE.
+        T[] newArray;
+        if (newItem == null)
+        {
+            throw new IllegalArgumentException();
+        }
+        if(size >= maximumSize ) 
+        { 
+            maximumSize *= 2;
+            newArray = (T[]) new Object[maximumSize];
+            for ( int i = 0; i < size; i++ )
+            {
+                newArray[i] = array[i];
+            }
+            this.array = newArray;
+                
+        } 
+        array[size] = newItem;
+        size++;
+    }
+    
+    public T dequeue() {
+        // ADD YOUR CODE HERE.
+        T temp;
+        if (size == 0 )
+        {
+            throw new IllegalStateException(); 
+        } 
+        if (maximumSize / 4 >= size){
+            
+            maximumSize /= 2;
+            
+            T[] newArray = (T[]) new Object[maximumSize];
+            
+            for ( int i = 0; i < maximumSize; i++ )
+            {
+                newArray[i] = array[i];
+            }
+            
+            this.array = newArray;
+        
+        }
+        size--;
+        temp = array[0];
+        for(int i = 1; i < size + 1; i++){
+            array[i-1] = array[i];
+        }
+        return temp;
+    }
+    
+    public T peek() {
+        // ADD YOUR CODE HERE.
+        if (size < 0 || array[0] == null)
+        {
+            throw new IllegalStateException(); 
+        } else {
+            return array[0];
+        }
+    }
+    
+    public boolean isEmpty() {
+        // ADD YOUR CODE HERE.
+        if (size <= 0)
+        {
+            return true;
+        }
+        return false;        
+    }
+    
+    public int size() {
+        // ADD YOUR CODE HERE.
+        return size;
+    }
+}
